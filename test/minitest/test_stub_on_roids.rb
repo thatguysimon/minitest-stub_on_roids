@@ -10,8 +10,7 @@ describe Minitest::StubOnRoids do
   Banana.extend Minitest::StubOnRoids
 
   let(:banana_mock) do
-    mock = MiniTest::Mock.new
-    mock.expect(:peel, "Peeling!", [10])
+    MiniTest::Mock.new # Only here to have something to stub with
   end
 
   describe ".stub_with_args" do
@@ -19,6 +18,19 @@ describe Minitest::StubOnRoids do
       it "works like a charm" do
         Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
           banana = Banana.new(3.0, "Yellow")
+        end
+      end
+    end
+
+    describe "when a method is stubbed more than once" do
+      it "raises MethodAlreadyStubbedError" do
+        assert_raises MethodAlreadyStubbedError do
+          Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
+            Banana.stub_with_args(:new, banana_mock, [3.0, "Green"]) do
+              banana = Banana.new(3.0, "Yellow")
+              banana = Banana.new(3.0, "Green")
+            end
+          end
         end
       end
     end
@@ -41,6 +53,19 @@ describe Minitest::StubOnRoids do
           banana = Banana.new(3.0, "Yellow")
           banana = Banana.new(3.0, "Yellow")
           banana = Banana.new(3.0, "Yellow")
+        end
+      end
+    end
+
+    describe "when a method is stubbed more than once" do
+      it "raises MethodAlreadyStubbedError" do
+        assert_raises MethodAlreadyStubbedError do
+          Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"]) do
+            Banana.stub_and_expect(:new, banana_mock, [3.0, "Green"]) do
+              banana = Banana.new(3.0, "Yellow")
+              banana = Banana.new(3.0, "Green")
+            end
+          end
         end
       end
     end
