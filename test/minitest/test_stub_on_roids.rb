@@ -17,7 +17,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called with all expected args" do
       it "works like a charm" do
         Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
-          banana = Banana.new(3.0, "Yellow")
+          Banana.new(3.0, "Yellow")
         end
       end
     end
@@ -27,8 +27,8 @@ describe Minitest::StubOnRoids do
         assert_raises MethodAlreadyStubbedError do
           Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
             Banana.stub_with_args(:new, banana_mock, [3.0, "Green"]) do
-              banana = Banana.new(3.0, "Yellow")
-              banana = Banana.new(3.0, "Green")
+              Banana.new(3.0, "Yellow")
+              Banana.new(3.0, "Green")
             end
           end
         end
@@ -39,7 +39,7 @@ describe Minitest::StubOnRoids do
       it "raises a StubbedMethodArgsError" do
         assert_raises StubbedMethodArgsError do
           Banana.stub_with_args(:new, banana_mock, [3.0, "Green"]) do
-            banana = Banana.new(3.0, "Yellow")
+            Banana.new(3.0, "Yellow")
           end
         end
       end
@@ -50,9 +50,9 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called the same amount of times it is expected" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 3) do
-          banana = Banana.new(3.0, "Yellow")
-          banana = Banana.new(3.0, "Yellow")
-          banana = Banana.new(3.0, "Yellow")
+          Banana.new(3.0, "Yellow")
+          Banana.new(3.0, "Yellow")
+          Banana.new(3.0, "Yellow")
         end
       end
     end
@@ -62,8 +62,8 @@ describe Minitest::StubOnRoids do
         assert_raises MethodAlreadyStubbedError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"]) do
             Banana.stub_and_expect(:new, banana_mock, [3.0, "Green"]) do
-              banana = Banana.new(3.0, "Yellow")
-              banana = Banana.new(3.0, "Green")
+              Banana.new(3.0, "Yellow")
+              Banana.new(3.0, "Green")
             end
           end
         end
@@ -74,8 +74,8 @@ describe Minitest::StubOnRoids do
       it "raises MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 1) do
-            banana = Banana.new(3.0, "Yellow")
-            banana = Banana.new(3.0, "Yellow")
+            Banana.new(3.0, "Yellow")
+            Banana.new(3.0, "Yellow")
           end
         end
       end
@@ -84,7 +84,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is expectedly called without args" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock) do
-          banana = Banana.new
+          Banana.new
         end
       end
     end
@@ -93,7 +93,7 @@ describe Minitest::StubOnRoids do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
           Banana.stub_and_expect(:new, banana_mock, [3.0]) do
-            banana = Banana.new
+            Banana.new
           end
         end
       end
