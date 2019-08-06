@@ -10,7 +10,7 @@ describe Minitest::StubOnRoids do
   Banana.extend Minitest::StubOnRoids
 
   let(:banana_mock) do
-    MiniTest::Mock.new # Only here to have something to stub with
+    Minitest::Mock.new # Only here to have something to stub with
   end
 
   describe ".stub_with_args" do
