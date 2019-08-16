@@ -5,13 +5,13 @@ Provides a set of helper methods around Minitest's Object#stub method.
 The following methods are available:
 
 * `#stub_with_args`
-  1. Stubs a class method.
-  2. Asserts that it's called with the expected arguments.
-  3. Doesn't mind how many times the method is called.
+  1. Stubs a class method for the duration of the block.
+  2. *If* the method is called, asserts that it is called with the expected arguments.
+  3. Doesn't mind how many times the method is called, if at all.
 * `#stub_and_expect`
-  1. Stubs a class method.
-  2. Asserts that it's called with the expected arguments.
-  3. Asserts that the method is called the exact amount of times as expected.
+  1. Stubs a class method for the duration of the block.
+  2. Asserts that the method is called the exact amount of times as expected, and with the expected arguments.
+
 
 ## Installation
 
@@ -45,26 +45,30 @@ This will add the following methods to the class:
 
 ### `#stub_with_args`
 
-Use `#stub_with_args` to stub a class method as you normally would but also assert that it is called with the expected arguments:
+Use `#stub_with_args` to stub a class method as you normally would but also assert that if it is called - it is called with the expected arguments:
 
 ```ruby
-# This will stub out the :new method and return `banana_mock` instead
 Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
   Banana.new(3.0, "Yellow")
 end
 
-# This will raise a StubbedMethodArgsError because :new was called with the wrong arguments
+# :new is stubbed and `banana_mock` is returned instead
+
 Banana.stub_with_args(:new, banana_mock, [3.0, "Green"]) do
   Banana.new(3.0, "Yellow")
 end
+
+# A StubbedMethodArgsError is raised because :new was called with the wrong arguments
 ```
+
+Just like with Minitest's `Object#stub` method, there is no expectation on the amount of times the stubbed method is called in the block.
 
 ### `#stub_and_expect`
 
-Use `#stub_and_expect` to stub a class method as you normally would but also set expectations on it, similarly to how you would do it with a regular `Minitest::Mock`.
+Use `#stub_and_expect` to stub a class method as you normally would but also set expectations on it, similarly to using `Minitest::Mock#expect`.
 
-This means that a `MockExpectationError` will be thrown if:
-* The method is called no with a different set of arguments.
+This means that a `MockExpectationError` will be thrown if inside the block:
+* The method is called with a different set of arguments than expected.
 * The method is called more or less the amount of times it was expected to be called.
 
 ```ruby
@@ -84,7 +88,7 @@ end
 # => MockExpectationError raised
 ```
 
-You can use the `times` keyword argument to expect a method to be called a specific amount of times within the block:
+Use the `times` keyword argument to expect a method to be called a specific amount of times within the block (default is 1):
 
 ```ruby
 Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 2) do
@@ -98,7 +102,7 @@ end
 ### Limitations
 
 * Nesting blocks is not supported, meaning you can't expect methods to be called with more than one set of arguments at a time.
-* This gem might work with instance methods as well, but its intent is (and it's only tested only for) using it on class methods only.
+* This gem might work with instance methods as well, but its intent is (and it's only tested for) using it on class methods.
 
 ## Contributing
 
