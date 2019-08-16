@@ -1,6 +1,6 @@
 # minitest-stub_on_roids
 
-Provides a set of helper methods around Minitest's Object#stub method.
+Provides a set of helper methods around Minitest's `Object#stub` method.
 
 The following methods are available:
 
