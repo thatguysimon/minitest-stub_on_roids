@@ -17,7 +17,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called with all expected args" do
       it "works like a charm" do
         Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
+          assert_equal banana_mock, Banana.new(3.0, "Yellow")
         end
       end
     end
@@ -49,9 +49,9 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called the same amount of times it is expected" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 3) do
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
+          assert_equal banana_mock, Banana.new(3.0, "Yellow")
+          assert_equal banana_mock, Banana.new(3.0, "Yellow")
+          assert_equal banana_mock, Banana.new(3.0, "Yellow")
         end
       end
     end
@@ -72,8 +72,8 @@ describe Minitest::StubOnRoids do
       it "raises MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 1) do
-            assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
             Banana.new(3.0, "Yellow")
+            assert_equal banana_mock, Banana.new(3.0, "Yellow")
           end
         end
       end
@@ -83,7 +83,7 @@ describe Minitest::StubOnRoids do
       it "raises MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 10) do
-            assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
+            assert_equal banana_mock, Banana.new(3.0, "Yellow")
           end
         end
       end
@@ -92,7 +92,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is expectedly called without args" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock) do
-          assert_equal(banana_mock, Banana.new)
+          assert_equal banana_mock, Banana.new
         end
       end
     end
