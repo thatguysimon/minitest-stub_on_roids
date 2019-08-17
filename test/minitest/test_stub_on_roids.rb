@@ -10,7 +10,7 @@ describe Minitest::StubOnRoids do
   Banana.extend Minitest::StubOnRoids
 
   let(:banana_mock) do
-    'banana'
+    "banana"
   end
 
   describe ".stub_with_args" do
