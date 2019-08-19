@@ -22,11 +22,19 @@ module Minitest
       end
     end
 
-    def stub_and_expect(name, val_or_callable = nil, expected_args = [], times: 1)
+    def stub_and_expect(name, val_or_callable = nil, expected_args = [], times: 1, expectations: [])
       raise MethodAlreadyStubbedError, "Method :#{name} already stubbed" if self.respond_to? "__minitest_stub__#{name}"
       
       mock = Minitest::Mock.new
-      times.times { mock.expect :call, val_or_callable, expected_args }
+
+      if expectations.size == 0
+        times.times { mock.expect :call, val_or_callable, expected_args }
+      else
+        expectations.each do |expectation|
+          [:expected_args, :returned_value].each { |k| raise ArgumentError, "#{k} not found in times_expectations param" if expectation[k] == nil }
+          mock.expect :call, expectation[:returned_value], expectation[:expected_args]
+        end
+      end
 
       stub(name, mock) do
         yield
