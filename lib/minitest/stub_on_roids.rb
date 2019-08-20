@@ -36,7 +36,8 @@ module Minitest
       else
         expectations.each do |expectation|
           [:expected_args, :return_value].each { |k| raise ArgumentError, "#{k} not found in expectation" if expectation[k].nil? }
-          mock.expect :call, expectation[:return_value], expectation[:expected_args]
+          expectation_times = expectation[:times] || 1
+          expectation_times.times { mock.expect :call, expectation[:return_value], expectation[:expected_args] }
         end
       end
 

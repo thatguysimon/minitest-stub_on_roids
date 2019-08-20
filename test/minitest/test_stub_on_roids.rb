@@ -263,5 +263,34 @@ describe Minitest::StubOnRoids do
         end
       end
     end
+
+    describe "a method is called with multiple expectations multiple times each in correct order" do
+      it "works like a charm" do
+        expectations = [
+          { 
+            expected_args: [3.0, "Yellow"],
+            return_value: banana_mock,
+            times: 2
+          },
+          { 
+            expected_args: [5.0, "Green"], 
+            return_value: banana_mock2,
+            times: 2
+          },
+          { 
+            expected_args: [15.0, "Red"], 
+            return_value: banana_mock3 
+          }
+        ]
+
+        Banana.stub_and_expect(:new, expectations: expectations) do
+          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
+          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
+          assert_equal(banana_mock2, Banana.new(5.0, "Green"))
+          assert_equal(banana_mock2, Banana.new(5.0, "Green"))
+          assert_equal(banana_mock3, Banana.new(15.0, "Red"))
+        end
+      end
+    end
   end
 end
