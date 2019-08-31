@@ -99,9 +99,60 @@ end
 # => Works
 ```
 
+Use the `expectations` keyword argument to expect a method to be called a specific amount of times within the block with different arguments and return values (order must be respected):
+
+```ruby
+expectations = [
+  { 
+    expected_args: [3.0, "Yellow"],
+    return_value: banana_mock 
+  },
+  { 
+    expected_args: [5.0, "Green"], 
+    return_value: banana_mock2 
+  },
+  { 
+    expected_args: [15.0, "Red"], 
+    return_value: banana_mock3 
+  }
+]
+
+Banana.stub_and_expect(:new, expectations: expectations) do
+  Banana.new(3.0, "Yellow")
+  Banana.new(5.0, "Green")
+  Banana.new(15.0, "Red")
+end
+
+# => Works
+```
+
+As order matters:
+
+```ruby
+expectations = [
+  { 
+    expected_args: [3.0, "Yellow"],
+    return_value: banana_mock 
+  },
+  { 
+    expected_args: [5.0, "Green"], 
+    return_value: banana_mock2 
+  },
+  { 
+    expected_args: [15.0, "Red"], 
+    return_value: banana_mock3 
+  }
+]
+Banana.stub_and_expect(:new, expectations: expectations) do
+  Banana.new(3.0, "Yellow")
+  Banana.new(15.0, "Red")
+end
+
+# => MockExpectationError raised
+```
+
 ### Limitations
 
-* Nesting blocks is not supported, meaning you can't expect methods to be called with more than one set of arguments at a time.
 * This gem might work with instance methods as well, but its intent is (and it's only tested for) using it on class methods.
 
 ## Contributing
