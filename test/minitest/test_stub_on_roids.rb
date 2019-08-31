@@ -20,6 +20,7 @@ describe Minitest::StubOnRoids do
   let(:banana_mock3) do
     "banana3"
   end
+  
   describe ".stub_with_args" do
     describe "when a stubbed method is called with all expected args" do
       it "works like a charm" do
