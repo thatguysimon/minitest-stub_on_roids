@@ -1,2 +1,11 @@
 Style/StringLiterals:
   Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe']
+
+Metrics/LineLength:
+  Max: 100

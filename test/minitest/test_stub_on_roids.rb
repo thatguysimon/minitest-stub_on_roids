@@ -265,7 +265,8 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "when a method is called with multiple expectations multiple times each in correct order" do
+    describe "when a method is called with multiple expectations multiple " \
+             "times each in correct order" do
       it "works like a charm" do
         expectations = [
           {
