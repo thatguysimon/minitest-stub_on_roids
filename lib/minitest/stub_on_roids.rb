@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "byebug"
 require "minitest/autorun"
 
 class StubbedMethodArgsError < StandardError
@@ -36,13 +35,26 @@ module Minitest
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
     def stub_and_expect(method_name, retval = nil, expected_args = [],
                         times: 1, expectations: [])
       raise_if_bad_args(retval, expected_args, expectations)
       raise_if_already_stubbed(method_name)
 
+      mock = build_mock(retval, expected_args, times, expectations)
+
+      stub(method_name, mock) do
+        yield
+      end
+
+      mock.verify
+    rescue StandardError => e
+      # Monkeypatching the error message for better readability
+      raise e.class, e.message.gsub(":call", ":#{name}")
+    end
+
+    private
+
+    def build_mock(retval, expected_args, times, expectations)
       mock = Minitest::Mock.new
 
       if expectations.size.zero?
@@ -58,22 +70,13 @@ module Minitest
         end
       end
 
-      stub(method_name, mock) do
-        yield
-      end
-
-      mock.verify
-    rescue StandardError => e
-      # Monkeypatching the error message for better readability
-      raise e.class, e.message.gsub(":call", ":#{name}")
+      mock
     end
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/MethodLength
-
-    private
 
     def raise_if_already_stubbed(method_name)
-      raise MethodAlreadyStubbedError, method_name if respond_to? "__minitest_stub__#{method_name}"
+      return unless respond_to? "__minitest_stub__#{method_name}"
+
+      raise MethodAlreadyStubbedError, method_name
     end
 
     def raise_if_bad_args(retval, expected_args, expectations)
