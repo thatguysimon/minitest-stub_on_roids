@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name        = "minitest-stub_on_roids"
   s.version     = "0.0.3"
@@ -9,4 +11,6 @@ Gem::Specification.new do |s|
   s.files       = Dir["{lib/**/*,[A-Z]*}"]
   s.homepage    = "https://github.com/thatguysimon/minitest-stub_on_roids"
   s.license     = "MIT"
+
+  s.add_development_dependency "rubocop"
 end

@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require "minitest/stub_on_roids"
 require "minitest/spec"
 
 class Banana
   def initialize(weight, color); end
+
   def peel(speed); end
 end
 
@@ -20,7 +23,7 @@ describe Minitest::StubOnRoids do
   let(:banana_mock3) do
     "banana3"
   end
-  
+
   describe ".stub_with_args" do
     describe "when a stubbed method is called with all expected args" do
       it "works like a charm" do
@@ -128,17 +131,17 @@ describe Minitest::StubOnRoids do
     describe "when a method is called with multiple expectations in correct order" do
       it "works like a charm" do
         expectations = [
-          { 
+          {
             expected_args: [3.0, "Yellow"],
-            return_value: banana_mock 
+            return_value: banana_mock
           },
-          { 
-            expected_args: [5.0, "Green"], 
-            return_value: banana_mock2 
+          {
+            expected_args: [5.0, "Green"],
+            return_value: banana_mock2
           },
-          { 
-            expected_args: [15.0, "Red"], 
-            return_value: banana_mock3 
+          {
+            expected_args: [15.0, "Red"],
+            return_value: banana_mock3
           }
         ]
 
@@ -172,17 +175,17 @@ describe Minitest::StubOnRoids do
       it "raises an MockExpectationError" do
         assert_raises MockExpectationError do
           expectations = [
-            { 
+            {
               expected_args: [3.0, "Yellow"],
-              return_value: banana_mock 
+              return_value: banana_mock
             },
-            { 
-              expected_args: [5.0, "Green"], 
-              return_value: banana_mock2 
+            {
+              expected_args: [5.0, "Green"],
+              return_value: banana_mock2
             },
-            { 
-              expected_args: [15.0, "Red"], 
-              return_value: banana_mock3 
+            {
+              expected_args: [15.0, "Red"],
+              return_value: banana_mock3
             }
           ]
 
@@ -198,20 +201,20 @@ describe Minitest::StubOnRoids do
       it "raises an MockExpectationError" do
         assert_raises MockExpectationError do
           expectations = [
-            { 
+            {
               expected_args: [3.0, "Yellow"],
-              return_value: banana_mock 
+              return_value: banana_mock
             },
-            { 
-              expected_args: [5.0, "Green"], 
-              return_value: banana_mock2 
+            {
+              expected_args: [5.0, "Green"],
+              return_value: banana_mock2
             },
-            { 
-              expected_args: [15.0, "Red"], 
-              return_value: banana_mock3 
+            {
+              expected_args: [15.0, "Red"],
+              return_value: banana_mock3
             }
           ]
-          
+
           Banana.stub_and_expect(:new, expectations: expectations) do
             assert_equal banana_mock, Banana.new(3.0, "Yellow")
             assert_equal banana_mock2, Banana.new(5.0, "Green")
@@ -223,20 +226,20 @@ describe Minitest::StubOnRoids do
     describe "when a method is called more times than expected" do
       it "raises an MockExpectationError" do
         expectations = [
-          { 
+          {
             expected_args: [3.0, "Yellow"],
-            return_value: banana_mock 
+            return_value: banana_mock
           },
-          { 
-            expected_args: [5.0, "Green"], 
-            return_value: banana_mock2 
+          {
+            expected_args: [5.0, "Green"],
+            return_value: banana_mock2
           },
-          { 
-            expected_args: [15.0, "Red"], 
-            return_value: banana_mock3 
+          {
+            expected_args: [15.0, "Red"],
+            return_value: banana_mock3
           }
         ]
-        
+
         Banana.stub_and_expect(:new, expectations: expectations) do
           assert_equal banana_mock, Banana.new(3.0, "Yellow")
           assert_equal banana_mock2, Banana.new(5.0, "Green")
@@ -252,7 +255,7 @@ describe Minitest::StubOnRoids do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
           expectations = [{
-            expected_args: [3.0, "Yellow"], 
+            expected_args: [3.0, "Yellow"],
             return_value: banana_mock
           }]
           expected_args = ['some_arg']
@@ -265,19 +268,19 @@ describe Minitest::StubOnRoids do
     describe "when a method is called with multiple expectations multiple times each in correct order" do
       it "works like a charm" do
         expectations = [
-          { 
+          {
             expected_args: [3.0, "Yellow"],
             return_value: banana_mock,
             times: 2
           },
-          { 
-            expected_args: [5.0, "Green"], 
+          {
+            expected_args: [5.0, "Green"],
             return_value: banana_mock2,
             times: 2
           },
-          { 
-            expected_args: [15.0, "Red"], 
-            return_value: banana_mock3 
+          {
+            expected_args: [15.0, "Red"],
+            return_value: banana_mock3
           }
         ]
 
