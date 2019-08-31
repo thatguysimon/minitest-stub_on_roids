@@ -12,5 +12,5 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/thatguysimon/minitest-stub_on_roids"
   s.license     = "MIT"
 
-  s.add_development_dependency "rubocop"
+  s.add_development_dependency "rubocop", "~> 0.74.0"
 end
