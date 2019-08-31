@@ -27,15 +27,17 @@ module Minitest
       
       mock = Minitest::Mock.new
 
-      if (expected_args.size.positive? or !val_or_callable.nil?) && expectations.size.positive?
-        raise ArgumentError, "Exclusion problem: expected_args and val_or_callable cant be sent with expectations"
+
+      if (!val_or_callable.nil? || expected_args.size.positive?) && expectations.size.positive?
+        raise ArgumentError, "`val_or_callable` and `expected_args` arguments cannot be passed along with `expectations`"
       end
 
       if expectations.size.zero?
         times.times { mock.expect :call, val_or_callable, expected_args }
       else
         expectations.each do |expectation|
-          [:expected_args, :return_value].each { |k| raise ArgumentError, "#{k} not found in expectation" if expectation[k].nil? }
+          [:expected_args, :return_value].each { |k| raise ArgumentError, "Missing key #{k} in expectation definition" if expectation[k].nil? }
+          
           expectation_times = expectation[:times] || 1
           expectation_times.times { mock.expect :call, expectation[:return_value], expectation[:expected_args] }
         end
