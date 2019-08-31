@@ -76,7 +76,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a stubbed method is called more times than expected" do
+    describe "when a stubbed method is called more times than expected" do
       it "raises MockExpectationError" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 1) do
           assert_equal banana_mock, Banana.new(3.0, "Yellow")
@@ -87,7 +87,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a stubbed method is called less times than expected" do
+    describe "when a stubbed method is called less times than expected" do
       it "raises MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 10) do
@@ -115,7 +115,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with an unexpected amount of args" do
+    describe "when a method is called with an unexpected amount of args" do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
           Banana.stub_and_expect(:new, banana_mock, [3.0]) do
@@ -125,7 +125,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with multiple expectations in correct order" do
+    describe "when a method is called with multiple expectations in correct order" do
       it "works like a charm" do
         expectations = [
           { 
@@ -150,7 +150,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with expectations missing expected_args key" do
+    describe "when a method is called with expectations missing expected_args key" do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
           expectations = [{ return_value: banana_mock }]
@@ -159,7 +159,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with expectations missing return_value key" do
+    describe "when a method is called with expectations missing return_value key" do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
           expectations = [{ expected_args: [3.0, "Yellow"] }]
@@ -168,7 +168,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with different expectations with unexpected arguments" do
+    describe "when a method is called with different expectations with unexpected arguments" do
       it "raises an MockExpectationError" do
         assert_raises MockExpectationError do
           expectations = [
@@ -194,7 +194,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called less times than expected" do
+    describe "when a method is called less times than expected" do
       it "raises an MockExpectationError" do
         assert_raises MockExpectationError do
           expectations = [
@@ -220,7 +220,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called more times than expected" do
+    describe "when a method is called more times than expected" do
       it "raises an MockExpectationError" do
         expectations = [
           { 
@@ -248,16 +248,13 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with expected_args, val_or_callable and expectations" do
+    describe "when a method is called with expected_args, val_or_callable and expectations" do
       it "raises an ArgumentError" do
         assert_raises ArgumentError do
-          expectations = [
-            { 
-              expected_args: [3.0, "Yellow"],
-              return_value: banana_mock 
-            }
-          ]
-          
+          expectations = [{
+            expected_args: [3.0, "Yellow"], 
+            return_value: banana_mock
+          }]
           expected_args = ['some_arg']
 
           Banana.stub_and_expect(:new, banana_mock, expected_args, expectations: expectations)
@@ -265,7 +262,7 @@ describe Minitest::StubOnRoids do
       end
     end
 
-    describe "a method is called with multiple expectations multiple times each in correct order" do
+    describe "when a method is called with multiple expectations multiple times each in correct order" do
       it "works like a charm" do
         expectations = [
           { 
