@@ -1,4 +1,4 @@
-# minitest-stub_on_roids
+# Minitest::StubOnRoids
 
 Provides a set of helper methods around Minitest's `Object#stub` method.
 
