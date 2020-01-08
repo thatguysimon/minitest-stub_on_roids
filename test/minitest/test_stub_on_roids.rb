@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "../test_helper"
 require "minitest/stub_on_roids"
 require "minitest/spec"
 
@@ -12,23 +13,15 @@ end
 describe Minitest::StubOnRoids do
   Banana.extend Minitest::StubOnRoids
 
-  let(:banana_mock) do
-    "banana"
-  end
-
-  let(:banana_mock2) do
-    "banana2"
-  end
-
-  let(:banana_mock3) do
-    "banana3"
-  end
+  let(:banana_mock) { Minitest::Mock.new }
+  let(:banana_mock2) { Minitest::Mock.new }
+  let(:banana_mock3) { Minitest::Mock.new }
 
   describe ".stub_with_args" do
     describe "when a stubbed method is called with all expected args" do
       it "works like a charm" do
         Banana.stub_with_args(:new, banana_mock, [3.0, "Yellow"]) do
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
         end
       end
     end
@@ -60,9 +53,9 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called the same amount of times it is expected" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 3) do
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
         end
       end
     end
@@ -82,7 +75,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is called more times than expected" do
       it "raises MockExpectationError" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 1) do
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
           assert_raises MockExpectationError do
             Banana.new(3.0, "Yellow")
           end
@@ -94,7 +87,7 @@ describe Minitest::StubOnRoids do
       it "raises MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 10) do
-            assert_equal banana_mock, Banana.new(3.0, "Yellow")
+            assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
           end
         end
       end
@@ -103,7 +96,7 @@ describe Minitest::StubOnRoids do
     describe "when a stubbed method is expectedly called without args" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock) do
-          assert_equal banana_mock, Banana.new
+          assert_equal banana_mock.object_id, Banana.new.object_id
         end
       end
     end
@@ -112,7 +105,7 @@ describe Minitest::StubOnRoids do
       it "raises an MockExpectationError" do
         assert_raises MockExpectationError do
           Banana.stub_and_expect(:new, banana_mock, [5.0, "Yellow"]) do
-            assert_equal banana_mock, Banana.new(14.0, "Green")
+            assert_equal banana_mock.object_id, Banana.new(14.0, "Green").object_id
           end
         end
       end
@@ -146,9 +139,9 @@ describe Minitest::StubOnRoids do
         ]
 
         Banana.stub_and_expect(:new, expectations: expectations) do
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
-          assert_equal(banana_mock2, Banana.new(5.0, "Green"))
-          assert_equal(banana_mock3, Banana.new(15.0, "Red"))
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
+          assert_equal banana_mock3.object_id, Banana.new(15.0, "Red").object_id
         end
       end
     end
@@ -190,8 +183,8 @@ describe Minitest::StubOnRoids do
           ]
 
           Banana.stub_and_expect(:new, expectations: expectations) do
-            assert_equal banana_mock, Banana.new(3.0, "Yellow")
-            assert_equal banana_mock3, Banana.new(15.0, "Red")
+            assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+            assert_equal banana_mock3.object_id, Banana.new(15.0, "Red").object_id
           end
         end
       end
@@ -216,8 +209,8 @@ describe Minitest::StubOnRoids do
           ]
 
           Banana.stub_and_expect(:new, expectations: expectations) do
-            assert_equal banana_mock, Banana.new(3.0, "Yellow")
-            assert_equal banana_mock2, Banana.new(5.0, "Green")
+            assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+            assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
           end
         end
       end
@@ -241,9 +234,10 @@ describe Minitest::StubOnRoids do
         ]
 
         Banana.stub_and_expect(:new, expectations: expectations) do
-          assert_equal banana_mock, Banana.new(3.0, "Yellow")
-          assert_equal banana_mock2, Banana.new(5.0, "Green")
-          assert_equal banana_mock3, Banana.new(15.0, "Red")
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
+          assert_equal banana_mock3.object_id, Banana.new(15.0, "Red").object_id
+          
           assert_raises MockExpectationError do
             Banana.new(5.0, "Purple")
           end
@@ -286,11 +280,11 @@ describe Minitest::StubOnRoids do
         ]
 
         Banana.stub_and_expect(:new, expectations: expectations) do
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
-          assert_equal(banana_mock, Banana.new(3.0, "Yellow"))
-          assert_equal(banana_mock2, Banana.new(5.0, "Green"))
-          assert_equal(banana_mock2, Banana.new(5.0, "Green"))
-          assert_equal(banana_mock3, Banana.new(15.0, "Red"))
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+          assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
+          assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
+          assert_equal banana_mock3.object_id, Banana.new(15.0, "Red").object_id
         end
       end
     end

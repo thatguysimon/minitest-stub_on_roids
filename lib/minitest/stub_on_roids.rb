@@ -35,11 +35,10 @@ module Minitest
       end
     end
 
-    def stub_and_expect(method_name, retval = nil, expected_args = [],
+    def stub_and_expect(method_name, retval = :retval_placeholder, expected_args = [],
                         times: 1, expectations: [])
       raise_if_bad_args(retval, expected_args, expectations)
       raise_if_already_stubbed(method_name)
-
       mock = build_mock(retval, expected_args, times, expectations)
 
       stub(method_name, mock) do
@@ -80,7 +79,7 @@ module Minitest
     end
 
     def raise_if_bad_args(retval, expected_args, expectations)
-      if (!retval.nil? || expected_args.size.positive?) &&
+      if (!:retval_placeholder.eql?(retval) || expected_args.size.positive?) &&
          expectations.size.positive?
         raise ArgumentError,
               "`retval` and `expected_args` arguments cannot be passed along with `expectations`"
@@ -89,7 +88,7 @@ module Minitest
 
     def validate_expectation(expectation)
       %i[expected_args return_value].each do |k|
-        raise ArgumentError, "Missing key #{k} in expectation definition" if expectation[k].nil?
+        raise ArgumentError, "Missing key #{k} in expectation definition" unless expectation.key?(k)
       end
     end
   end
