@@ -14,9 +14,9 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "minitest", "~> 5"
 
-  s.add_development_dependency "minitest-reporters", "~> 1.4"
-  s.add_development_dependency "rubocop", "~> 0.74.0"
   s.add_development_dependency "bundler", "~> 2.0"
-  s.add_development_dependency "rake", "~> 13"
   s.add_development_dependency "byebug", "~> 11"
+  s.add_development_dependency "minitest-reporters", "~> 1.4"
+  s.add_development_dependency "rake", "~> 13"
+  s.add_development_dependency "rubocop", "~> 0.74.0"
 end

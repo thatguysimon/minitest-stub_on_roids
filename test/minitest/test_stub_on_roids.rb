@@ -237,7 +237,7 @@ describe Minitest::StubOnRoids do
           assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
           assert_equal banana_mock2.object_id, Banana.new(5.0, "Green").object_id
           assert_equal banana_mock3.object_id, Banana.new(15.0, "Red").object_id
-          
+
           assert_raises MockExpectationError do
             Banana.new(5.0, "Purple")
           end
