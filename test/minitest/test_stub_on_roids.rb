@@ -7,7 +7,9 @@ require "minitest/spec"
 class Banana
   def initialize(weight, color); end
 
-  def peel(speed); end
+  def self.peel
+    return "peeled"
+  end
 end
 
 describe Minitest::StubOnRoids do
@@ -50,6 +52,17 @@ describe Minitest::StubOnRoids do
   end
 
   describe ".stub_and_expect" do
+    describe "when multiple methods are stubbed on the same class" do
+      it "stubs all stubbed methods" do
+        Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"]) do
+          Banana.stub_and_expect(:peel, "peeled differently") do
+            assert_equal banana_mock.object_id, Banana.new(3.0, "Yellow").object_id
+            assert_equal "peeled differently", Banana.peel
+          end
+        end
+      end
+    end
+
     describe "when a stubbed method is called the same amount of times it is expected" do
       it "works like a charm" do
         Banana.stub_and_expect(:new, banana_mock, [3.0, "Yellow"], times: 3) do
