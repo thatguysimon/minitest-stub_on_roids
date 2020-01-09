@@ -48,7 +48,7 @@ module Minitest
       mock.verify
     rescue StandardError => e
       # Monkeypatching the error message for better readability
-      raise e.class, e.message.gsub(":call", ":#{name}")
+      raise e.class, e.message.gsub(":call", ":#{method_name}")
     end
 
     private
