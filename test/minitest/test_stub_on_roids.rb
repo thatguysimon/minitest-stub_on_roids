@@ -8,7 +8,7 @@ class Banana
   def initialize(weight, color); end
 
   def self.peel
-    return "peeled"
+    "peeled"
   end
 end
 
